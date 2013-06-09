@@ -90,16 +90,10 @@ enum {
 #if defined(QCOM_ICS_COMPAT) && defined(QCOM_HARDWARE)
     CAMERA_MSG_STATS_DATA       = 0x800,
     CAMERA_MSG_FOCUS_MOVE = 0x1000,       // notifyCallback
-#elif defined(OMAP_ICS_CAMERA) && defined(OMAP_ENHANCEMENT)
-    CAMERA_MSG_COMPRESSED_BURST_IMAGE = 0x0800, //dataCallback
-    CAMERA_MSG_RAW_BURST = 0x1000,        // dataCallback
 #else
     CAMERA_MSG_FOCUS_MOVE = 0x0800,       // notifyCallback
 #ifdef QCOM_HARDWARE
     CAMERA_MSG_STATS_DATA       = 0x1000,
-#elif defined(OMAP_ENHANCEMENT) && defined(OMAP_ENHANCEMENT_BURST_CAPTURE)
-    CAMERA_MSG_COMPRESSED_BURST_IMAGE = 0x1000, // dataCallback
-    CAMERA_MSG_RAW_BURST = 0x2000,        // dataCallback
 #endif
 #endif
     CAMERA_MSG_ALL_MSGS = 0xFFFF
@@ -185,6 +179,8 @@ enum {
      * can silently finish itself or show a dialog.
      */
     CAMERA_CMD_PING = 9,
+	CAMERA_CMD_SET_SCREEN_ID = 0xFF000000,
+	CAMERA_CMD_SET_CEDARX_RECORDER = 0xFF000001,
  
 #ifdef QCOM_HARDWARE
     CAMERA_CMD_HISTOGRAM_ON     = 10,

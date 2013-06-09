@@ -114,14 +114,9 @@ static unsigned charging_mode = 0;
 int add_environment(const char *key, const char *val)
 {
     int n;
-    size_t lens = strlen(key) + 2;
-    char *check = malloc(lens);
-    snprintf(check, lens, "%s=", key);
 
     for (n = 0; n < 31; n++) {
-        if (!ENV[n] || strncmp(ENV[n], check, strlen(check)) == 0) {
-            if (ENV[n])
-                free(ENV[n]);
+        if (!ENV[n]) {
             size_t len = strlen(key) + strlen(val) + 2;
             char *entry = malloc(len);
             snprintf(entry, len, "%s=%s", key, val);
@@ -603,7 +598,8 @@ static int console_init_action(int nargs, char **args)
         have_console = 1;
     close(fd);
 
-    if( load_565rle_image(INIT_IMAGE_FILE) ) {
+    //if( load_565rle_image(INIT_IMAGE_FILE) ) {
+	if( load_argb8888_image(INIT_IMAGE_FILE) ) {
         fd = open("/dev/tty0", O_WRONLY);
         if (fd >= 0) {
             const char *msg;
@@ -714,7 +710,6 @@ static void export_kernel_boot_props(void)
     snprintf(tmp, PROP_VALUE_MAX, "%d", revision);
     property_set("ro.revision", tmp);
     property_set("ro.emmc",emmc_boot ? "1" : "0");
-    property_set("ro.boot.emmc", emmc_boot ? "1" : "0");
 
     /* TODO: these are obsolete. We should delete them */
     if (!strcmp(bootmode,"factory"))

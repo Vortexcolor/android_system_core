@@ -67,7 +67,8 @@ typedef enum {
     AUDIO_SOURCE_CAMCORDER           = 5,
     AUDIO_SOURCE_VOICE_RECOGNITION   = 6,
     AUDIO_SOURCE_VOICE_COMMUNICATION = 7,
-#if defined(QCOM_FM_ENABLED) || defined(STE_FM)
+    AUDIO_SOURCE_AF                         = 8,
+#ifdef QCOM_FM_ENABLED
     AUDIO_SOURCE_FM_RX               = 8,
     AUDIO_SOURCE_FM_RX_A2DP          = 9,
 #endif
@@ -349,7 +350,7 @@ typedef enum {
     AUDIO_DEVICE_OUT_DGTL_DOCK_HEADSET         = 0x1000,
     AUDIO_DEVICE_OUT_USB_ACCESSORY             = 0x2000,
     AUDIO_DEVICE_OUT_USB_DEVICE                = 0x4000,
-#if defined(QCOM_FM_ENABLED) || defined(STE_FM)
+#ifdef QCOM_FM_ENABLED
     AUDIO_DEVICE_OUT_FM                        = 0x8000,
     AUDIO_DEVICE_OUT_FM_TX                     = 0x10000,
 #endif
@@ -374,7 +375,7 @@ typedef enum {
                                  AUDIO_DEVICE_OUT_DGTL_DOCK_HEADSET |
                                  AUDIO_DEVICE_OUT_USB_ACCESSORY |
                                  AUDIO_DEVICE_OUT_USB_DEVICE |
-#if defined(QCOM_FM_ENABLED) || defined(STE_FM)
+#ifdef QCOM_FM_ENABLED
                                  AUDIO_DEVICE_OUT_FM |
                                  AUDIO_DEVICE_OUT_FM_TX |
 #endif
@@ -401,12 +402,8 @@ typedef enum {
     AUDIO_DEVICE_IN_AUX_DIGITAL           = 0x2000000,
     AUDIO_DEVICE_IN_VOICE_CALL            = 0x4000000,
     AUDIO_DEVICE_IN_BACK_MIC              = 0x8000000,
-#if defined(QCOM_FM_ENABLED)
+#ifdef QCOM_FM_ENABLED
     AUDIO_DEVICE_IN_FM_RX                 = 0x20000000,
-#elif defined(STE_FM)
-    AUDIO_DEVICE_IN_FM_RX                 = 0x1000000,
-#endif
-#if defined(QCOM_FM_ENABLED) || defined(STE_FM)
     AUDIO_DEVICE_IN_FM_RX_A2DP            = 0x40000000,
 #endif
     AUDIO_DEVICE_IN_PROXY                 = 0x80000000,
@@ -420,9 +417,7 @@ typedef enum {
     AUDIO_DEVICE_IN_AUX_DIGITAL           = 0x200000,
     AUDIO_DEVICE_IN_VOICE_CALL            = 0x400000,
     AUDIO_DEVICE_IN_BACK_MIC              = 0x800000,
-#if defined(STE_FM)
-    AUDIO_DEVICE_IN_FM_RX                 = 0x1000000,
-#endif
+    AUDIO_DEVICE_IN_AF 		              = 0x1000000,
     AUDIO_DEVICE_IN_DEFAULT               = 0x80000000,
 #endif
 
@@ -434,7 +429,8 @@ typedef enum {
                                AUDIO_DEVICE_IN_AUX_DIGITAL |
                                AUDIO_DEVICE_IN_VOICE_CALL |
                                AUDIO_DEVICE_IN_BACK_MIC |
-#if defined(QCOM_FM_ENABLED) || defined(STE_FM)
+                               AUDIO_DEVICE_IN_AF |
+#ifdef QCOM_FM_ENABLED
                                AUDIO_DEVICE_IN_FM_RX |
                                AUDIO_DEVICE_IN_FM_RX_A2DP |
 #endif
@@ -444,23 +440,6 @@ typedef enum {
                                AUDIO_DEVICE_IN_DEFAULT),
     AUDIO_DEVICE_IN_ALL_SCO = AUDIO_DEVICE_IN_BLUETOOTH_SCO_HEADSET,
 } audio_devices_t;
-
-#ifdef STE_AUDIO
-
-// AUDIO_INPUT_CLIENT_ID_BASE provide a means to refer to client IdÂ´s not
-// explicitly defined in the enum audio_input_clients
-#define AUDIO_INPUT_CLIENT_ID_BASE AUDIO_INPUT_CLIENT_ID1
-
-// AUDIO_INPUT_CLIENT_ID_BASE provide a means to refer to client Id´s not explicitly defined in the enum audio_input_clients
-typedef enum audio_input_clients {
-        AUDIO_INPUT_CLIENT_ID1 = 0x1,
-        AUDIO_INPUT_CLIENT_ID2 = 0x2,
-        AUDIO_INPUT_CLIENT_ID3 = 0x3,
-        AUDIO_INPUT_CLIENT_ID4 = 0x4,
-        AUDIO_INPUT_CLIENT_PLAYBACK = 0x80000000, // request client of playback type
-        AUDIO_INPUT_CLIENT_RECORD = 0x80000001   // request client of recording type
-} audio_input_clients;
-#endif
 
 /* the audio output flags serve two purposes:
  * - when an AudioTrack is created they indicate a "wish" to be connected to an
